@@ -9,3 +9,5 @@ share
 build
 __pycache__
 Eigen
+.vscode
+pybind11

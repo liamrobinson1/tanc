@@ -122,52 +122,7 @@ class DateTime {
                 setup();
             }
         
-        // constructor if *PyObject args are given as tuple of int
-        DateTime(PyObject* args) {
-            // Parse the input objects as two datetime objects and an integer
-            // number of arguments passed:
-            int n = PyTuple_Size(args);
-            if (n == 3) {
-                if (!PyArg_ParseTuple(args, "iii", &year, &month, &day)) {
-                    std::cout << "Error parsing datetime" << std::endl;
-                }
-                hour = 0;
-                minute = 0;
-                second = 0;
-                nanosecond = 0;
-            }
-            else if (n == 4) {
-                if (!PyArg_ParseTuple(args, "iiii", &year, &month, &day, &hour)) {
-                    std::cout << "Error parsing datetime" << std::endl;
-                }
-                minute = 0;
-                second = 0;
-                nanosecond = 0;
-            }
-            else if (n == 5) {
-                if (!PyArg_ParseTuple(args, "iiiii", &year, &month, &day, &hour, &minute)) {
-                    std::cout << "Error parsing datetime" << std::endl;
-                }
-                second = 0;
-                nanosecond = 0;
-            }
-            else if (n == 6) {
-                if (!PyArg_ParseTuple(args, "iiiiii", &year, &month, &day, &hour, &minute, &second)) {
-                    std::cout << "Error parsing datetime" << std::endl;
-                }
-                nanosecond = 0;
-            }
-            else if (n == 7) {
-                if (!PyArg_ParseTuple(args, "iiiiiii", &year, &month, &day, &hour, &minute, &second, &nanosecond)) {
-                    std::cout << "Error parsing datetime" << std::endl;
-                }
-            }
-            else {
-                std::cout << "Error parsing datetime" << std::endl;
-            }
-            setup();
-        }
-
+    
     // print when called with std::cout
     friend std::ostream& operator<<(std::ostream& os, const DateTime dtime) {
         os << dtime.year << "-" << dtime.month << "-" << dtime.day << " " << dtime.hour << ":" << dtime.minute << ":" << dtime.second << "." << dtime.nanosecond;
@@ -282,9 +237,10 @@ class DateTime {
     }
 
     Eigen::Matrix3d gtod_to_itrf() {
+        // only if Pi is not already computed
         double x_p = dms_to_rad(0, 0, px);
         double y_p = dms_to_rad(0, 0, py);
-        Eigen::Matrix3d Pi = r2(-x_p) * r1(-y_p);
+        Pi = r2(y_p) * r1(x_p);
         return Pi;
     }
 
@@ -307,7 +263,7 @@ class DateTime {
     }
 
 
-    DateTime operator+(const TimeDelta& tdelta) {
+    DateTime operator+(const TimeDelta& tdelta) const {
         int y = year + tdelta.years;
         int m = month + tdelta.months;
         int d = day + tdelta.days;
@@ -316,6 +272,39 @@ class DateTime {
         int s = second + tdelta.seconds;
         int ns = nanosecond + tdelta.nanoseconds;
         return DateTime(y, m, d, h, min, s, ns);
+    }
+
+    DateTime operator-(const TimeDelta& tdelta) const {
+        int y = year - tdelta.years;
+        int m = month - tdelta.months;
+        int d = day - tdelta.days;
+        int h = hour - tdelta.hours;
+        int min = minute - tdelta.minutes;
+        int s = second - tdelta.seconds;
+        int ns = nanosecond - tdelta.nanoseconds;
+        return DateTime(y, m, d, h, min, s, ns);
+    }
+
+    TimeDelta operator+(const DateTime& dtime) const {
+        int y = year + dtime.year;
+        int m = month + dtime.month;
+        int d = day + dtime.day;
+        int h = hour + dtime.hour;
+        int min = minute + dtime.minute;
+        int s = second + dtime.second;
+        int ns = nanosecond + dtime.nanosecond;
+        return TimeDelta(y, m, d, h, min, s, ns);
+    } 
+
+    TimeDelta operator-(const DateTime& dtime) const {
+        int y = year - dtime.year;
+        int m = month - dtime.month;
+        int d = day - dtime.day;
+        int h = hour - dtime.hour;
+        int min = minute - dtime.minute;
+        int s = second - dtime.second;
+        int ns = nanosecond - dtime.nanosecond;
+        return TimeDelta(y, m, d, h, min, s, ns);
     }
 };
 
@@ -341,7 +330,33 @@ DateTime jd_to_datetime(double jd) {
     int min = floor(add_sec / 60);
     add_sec -= min * 60;
     return DateTime(Y, M, D, hr, min, add_sec);
-}
+};
+
+class DateTimeArray {
+    public:
+        const std::vector<DateTime> vec;
+
+        DateTimeArray(std::vector<DateTime> vec) : vec(vec) {}
+        DateTimeArray() {}
+
+        DateTimeArray operator+(const TimeDelta& tdelta) const {
+            std::vector<DateTime> new_vec;
+            int size_vec = vec.size();
+            for (int i = 0; i < size_vec; i++) {
+                new_vec.push_back(vec[i] + tdelta);
+            }
+            return DateTimeArray(new_vec);
+        }
+        DateTimeArray operator-(const TimeDelta& tdelta) const {
+            std::vector<DateTime> new_vec;
+            int size_vec = vec.size();
+            for (int i = 0; i < size_vec; i++) {
+                new_vec.push_back(vec[i] - tdelta);
+            }
+            return DateTimeArray(new_vec);
+        }
+};
+    
 
 // datetime linspace returning as vec of datetimes
 std::vector<DateTime> datetime_linspace(DateTime start, DateTime end, int num) {
