@@ -13,7 +13,7 @@ jobs:
     strategy:
       matrix:
         python: [3.11]
-        os: [macos-latest, windows-latest]
+        os: [macos-latest, windows-latest, self-hosted]
       fail-fast: false  # Set to false to continue running other jobs even if one fails
       
     steps:
