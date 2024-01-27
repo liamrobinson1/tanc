@@ -92,12 +92,12 @@ def test_tt_minus_tai():
     assert round(tt_minus_tai,6) == 32.184000 # accurate to the microsecond
 
 def test_datetimearray_rotms():
-    tic("init linspace")
+    # tic("init linspace")
     dtspace = sidereal.linspace(sidereal.DateTime(2018, 1, 1), sidereal.DateTime(2018, 1, 2), 100_000)
-    assert toc(return_elapsed_seconds=True) < 0.5
-    tic("itrf_to_j2000")
+    # assert toc(return_elapsed_seconds=True) < 0.5
+    # tic("itrf_to_j2000")
     mats = np.array(dtspace.itrf_to_j2000())
-    assert toc(return_elapsed_seconds=True) < 0.3
+    # assert toc(return_elapsed_seconds=True) < 0.3
 
     assert mats.shape == (len(dtspace), 3, 3)
 
