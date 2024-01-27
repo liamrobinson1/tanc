@@ -34,7 +34,7 @@ jobs:
       env:
         CIBW_PRERELEASE_PYTHONS: True
         CIBW_ARCHS_MACOS: x86_64 arm64
-        CIBW_ARCHS_WINDOWS: AMD64 ARM64
+        CIBW_ARCHS_WINDOWS: AMD64
         CIBW_ARCHS_LINUX: x86_64
 
     - uses: actions/upload-artifact@26f96dfa697d77e81fd5907df203aa23a56210a8 # v4.3.0
