@@ -12,6 +12,4 @@ ext_modules = [
 ]
 
 setup(name = 'sidereal',
-    version = '1.0',
-    description = 'This package for converting between time systems and coordinate systems',
     ext_modules=ext_modules)
