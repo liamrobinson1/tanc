@@ -35,7 +35,7 @@ class TimeDelta {
             return os;
         }   
 
-        double total_seconds() {
+        const double total_seconds() {
             return years * 365.25 * 24 * 60 * 60 + months * 31 * 24 * 60 * 60 + days * 24 * 60 * 60 + hours * 60 * 60 + minutes * 60 + seconds + nanoseconds / 1e9; // Note: assumes 31 days in a month
         }
         
@@ -535,4 +535,33 @@ DateTime now() {
                     now_as_tm.tm_min,
                     now_as_tm.tm_sec,
                     static_cast<int>(now_ns.count()));
+}
+
+
+TimeDelta years(int years) {
+    return TimeDelta(years, 0, 0, 0, 0, 0, 0);
+}
+
+TimeDelta months(int months) {
+    return TimeDelta(0, months, 0, 0, 0, 0, 0);
+}
+
+TimeDelta days(int days) {
+    return TimeDelta(0, 0, days, 0, 0, 0, 0);
+}
+
+TimeDelta hours(int hours) {
+    return TimeDelta(0, 0, 0, hours, 0, 0, 0);
+}
+
+TimeDelta minutes(int minutes) {
+    return TimeDelta(0, 0, 0, 0, minutes, 0, 0);
+}
+
+TimeDelta seconds(int seconds) {
+    return TimeDelta(0, 0, 0, 0, 0, seconds, 0);
+}
+
+TimeDelta nanoseconds(int nanoseconds) {
+    return TimeDelta(0, 0, 0, 0, 0, 0, nanoseconds);
 }

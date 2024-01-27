@@ -18,6 +18,13 @@ PYBIND11_MODULE(sidereal, m) {
     m.def("arange", &datetime_arange, "Generate DateTime objects between two specified DateTime points with a specified step size.");
     m.def("jd_to_datetime", &jd_to_datetime, "Convert a Julian Date to a DateTime object.");
     m.def("now", &now, "Get the current DateTime.");
+    m.def("years", &years);
+    m.def("months", &months);
+    m.def("days", &days);
+    m.def("hours", &hours);
+    m.def("minutes", &minutes);
+    m.def("seconds", &seconds);
+    m.def("nanoseconds", &nanoseconds);
 
     py::class_<DateTime>(m, "DateTime")
         .def(py::init<int, int, int, int, int, int, int>(), 
@@ -81,6 +88,9 @@ PYBIND11_MODULE(sidereal, m) {
         .def_readwrite("minutes", &TimeDelta::minutes)
         .def_readwrite("seconds", &TimeDelta::seconds)
         .def_readwrite("nanoseconds", &TimeDelta::nanoseconds)
+        .def("total_seconds", [](TimeDelta &dt) {
+            return dt.total_seconds();
+        })
         .def("__repr__", [](const TimeDelta &dt) {
             return "<TimeDelta: " + std::to_string(dt.years) + "Y " + std::to_string(dt.months) + "M " + std::to_string(dt.days) + "D " + std::to_string(dt.hours) + "h " + std::to_string(dt.minutes) + "m " + std::to_string(dt.seconds) + "s " + std::to_string(dt.nanoseconds) + "ns>";
         })

@@ -16,7 +16,6 @@ int main() {
     Eigen::MatrixXd mat = date_vec[0].itrf_to_j2000();
     // std::cout << mat << std::endl;
 
-
     tic();
     std::vector<Eigen::Matrix3d> mat_vec = date_vec.itrf_to_j2000();
     toc();
