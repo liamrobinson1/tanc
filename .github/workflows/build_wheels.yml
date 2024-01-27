@@ -1,3 +1,10 @@
+name: Build and publish wheels
+
+on:
+  push:
+    branches:
+      - main  # Change this to the main branch name, or use 'master' if that's the default branch.
+
 jobs:
   build-wheels:
     runs-on: ubuntu-latest
@@ -11,9 +18,7 @@ jobs:
       run: python -m pip install cibuildwheel
     - name: Build wheels
       run: python -m cibuildwheel --output-dir wheelhouse
-
     - name: Publish wheels to PyPI
-      if: github.event_name == 'push'
       uses: pypa/gh-action-pypi-publish@v1.4.2
       with:
         user: __token__
