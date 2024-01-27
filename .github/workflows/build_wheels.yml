@@ -7,7 +7,7 @@ on:
 
 jobs:
   build:
-    name: Build wheel for ${{ matrix.python }}-${{ matrix.buildplat[1] }}
+    name: Build wheel for ${{ matrix.buildplat[1] }}
     runs-on: ${{ matrix.buildplat[0] }}
     strategy:
       matrix:
@@ -39,7 +39,6 @@ jobs:
 
     - uses: actions/upload-artifact@26f96dfa697d77e81fd5907df203aa23a56210a8 # v4.3.0
       with:
-        name: ${{ matrix.python }}-${{ startsWith(matrix.buildplat[1], 'macosx') && 'macosx' || matrix.buildplat[1] }}
         path: ./wheelhouse/*.whl
 
     - name: Install Twine
