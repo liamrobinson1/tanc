@@ -11,7 +11,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        python: [3.11]
+        python: [3.9, 3.11]
         os: [macos-latest, windows-latest]
       fail-fast: false  # Set to false to continue running other jobs even if one fails
 

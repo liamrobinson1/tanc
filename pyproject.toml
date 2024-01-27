@@ -17,7 +17,3 @@ Documentation = "https://yourprojectdocs.com"
 [build-system]
 requires = ["setuptools>=42", "wheel", "numpy>=1.19.2", "pybind11>=2.11.0", "eigency>=1.6.0"]
 build-backend = "setuptools.build_meta"
-
-[tool.cibuildwheel]
-build = "cp311-*"
-skip = ["*linux*"]
