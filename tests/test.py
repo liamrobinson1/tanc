@@ -1,26 +1,26 @@
-import tanc 
+import sidereal 
 from profiling import tic, toc
 import numpy as np
 
-dtime1 = tanc.DateTime(2018, 1, 1)
-dtime2 = tanc.DateTime(2018, 1, 2)
+dtime1 = sidereal.DateTime(2018, 1, 1)
+dtime2 = sidereal.DateTime(2018, 1, 2)
 
 def test_datetime_subtract():
     dt = dtime2 - dtime1
     assert dt.days == 1
 
 def test_datetime_plus_timedelta():
-    dt = tanc.TimeDelta(days=1)
+    dt = sidereal.TimeDelta(days=1)
     dtime2 = dtime1 + dt
     assert dtime2.day == 2
 
 def test_datetime_linspace():
-    linspace = tanc.linspace(dtime1, dtime2, 100_000)
+    linspace = sidereal.linspace(dtime1, dtime2, 100_000)
     assert len(linspace) == 100_000
 
 def test_datetime_arange():
-    dt = tanc.TimeDelta(seconds=1)
-    arange = tanc.arange(dtime1, dtime2, dt)
+    dt = sidereal.TimeDelta(seconds=1)
+    arange = sidereal.arange(dtime1, dtime2, dt)
     assert len(arange) == 86_400
 
 def test_datetime_itrf_to_j2000():
@@ -52,7 +52,7 @@ def test_tt_minus_tai():
 
 def test_datetimearray_rotms():
     tic("init linspace")
-    dtspace = tanc.linspace(tanc.DateTime(2018, 1, 1), tanc.DateTime(2018, 1, 2), 100_000)
+    dtspace = sidereal.linspace(sidereal.DateTime(2018, 1, 1), sidereal.DateTime(2018, 1, 2), 100_000)
     assert toc(return_elapsed_seconds=True) < 0.5
     tic("itrf_to_j2000")
     mats = np.array(dtspace.itrf_to_j2000())
@@ -69,7 +69,7 @@ def test_datetimearray_rotms():
 
 if __name__ == "__main__":
     tic("init linspace")
-    dtspace = tanc.linspace(tanc.DateTime(2018, 1, 1), tanc.DateTime(2018, 1, 2), 100_000)
+    dtspace = sidereal.linspace(sidereal.DateTime(2018, 1, 1), sidereal.DateTime(2018, 1, 2), 100_000)
     toc()
     tic("itrf_to_j2000")
     mats = np.array(dtspace.j2000_to_mod())

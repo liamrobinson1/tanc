@@ -12,8 +12,8 @@ using namespace std;
 #include "time.hpp"
 #include "profile.hpp"
 
-PYBIND11_MODULE(tanc, m) {
-    m.doc() = "tanc module";  // Optional module docstring
+PYBIND11_MODULE(sidereal, m) {
+    m.doc() = "sidereal module";  // Optional module docstring
     m.def("linspace", &datetime_linspace, "Generate n evenly spaced DateTime objects between two specified DateTime points.");
     m.def("arange", &datetime_arange, "Generate DateTime objects between two specified DateTime points with a specified step size.");
 

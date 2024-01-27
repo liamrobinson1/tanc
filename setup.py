@@ -4,13 +4,13 @@ import eigency
 
 ext_modules = [
     Pybind11Extension(
-        name="tanc",
+        name="sidereal",
         sources=["src/python_bindings.cpp"],
         include_dirs=['src', *tuple(eigency.get_includes())],
     ),
 ]
 
-setup(name = 'tanc',
+setup(name = 'sidereal',
     version = '1.0',
     description = 'This package for converting between time systems and coordinate systems',
     ext_modules=ext_modules)

@@ -1,6 +1,6 @@
 
 [project]
-name = "tanc"
+name = "sidereal"
 version = "0.0.1"
 authors = [{name = "Liam Robinson", email = "liamers127@gmail.com"}]
 description = "Time and coordinate systems for astrodynamics"
@@ -11,7 +11,7 @@ dependencies = [
 
 [project.urls]
 Homepage = "https://example.com"
-Repository = "https://github.com/liamrobinson1/tanc"
+Repository = "https://github.com/liamrobinson1/sidereal"
 Documentation = "https://yourprojectdocs.com"
 
 [build-system]
