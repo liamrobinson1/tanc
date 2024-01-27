@@ -9,3 +9,6 @@ clean:
 
 test:
 	export PYTHONPATH="./:${PYTHONPATH}" && pytest tests/*.py
+
+start-runner:
+	actions-runner/run.sh
