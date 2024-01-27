@@ -1,5 +1,9 @@
-#define _USE_MATH_DEFINES // for ms visual studio
-#include <cmath>
+#ifdef _MSC_VER
+    #define _USE_MATH_DEFINES // For MS Visual Studio
+    #include <math.h>
+#else
+    #include <cmath>
+#endif
 #include "Eigen/Eigen"
 #include <iostream>
 #include "math.hpp"
