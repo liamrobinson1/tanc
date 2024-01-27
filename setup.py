@@ -7,6 +7,7 @@ ext_modules = [
         name="sidereal",
         sources=["src/python_bindings.cpp"],
         include_dirs=['src', *tuple(eigency.get_includes())],
+        extra_compile_args=['-std=c++11'],
     ),
 ]
 
