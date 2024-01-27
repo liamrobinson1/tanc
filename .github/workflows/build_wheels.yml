@@ -37,7 +37,7 @@ jobs:
         CIBW_ARCHS_WINDOWS: AMD64
         CIBW_ARCHS_LINUX: x86_64
         CIBW_TEST_REQUIRES: pytest numpy
-        CIBW_TEST_COMMAND: "pytest tests/*.py"
+        CIBW_TEST_COMMAND: "pytest sidereal/tests/*.py"
         CIBW_TEST_SKIP: "*-macosx_arm64 *-macosx_universal2:arm64"
 
     - name: Install Twine
