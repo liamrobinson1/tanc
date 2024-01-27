@@ -1,7 +1,7 @@
-#include "Eigen/Eigen"
-#include <iostream>
 #define _USE_MATH_DEFINES // for ms visual studio
 #include <cmath>
+#include "Eigen/Eigen"
+#include <iostream>
 #include "math.hpp"
 #include "iau1980.hpp"
 
