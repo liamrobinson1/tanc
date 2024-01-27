@@ -43,13 +43,20 @@ PYBIND11_MODULE(tanc, m) {
         .def("__sub__", [](DateTime &dt1, DateTime &dt2) {
             return dt1 - dt2;
         })
-        .def("__add__", [](DateTime &dt1, TimeDelta &td2) {
-            return dt1 + td2;
+        .def("__add__", [](DateTime &dt1, TimeDelta &dt2) {
+            return dt1 + dt2;
+        })
+        .def("__sub__", [](DateTime &dt1, TimeDelta &dt2) {
+            return dt1 - dt2;
         })
         .def_readwrite("jd_utc", &DateTime::jd_utc)
         .def_readwrite("jd_ut1", &DateTime::jd_ut1)
         .def_readwrite("jd_tai", &DateTime::jd_tai)
         .def_readwrite("jd_tt", &DateTime::jd_tt)
+        .def_readwrite("mjd_utc", &DateTime::mjd_utc)
+        .def_readwrite("mjd_ut1", &DateTime::mjd_ut1)
+        .def_readwrite("mjd_tai", &DateTime::mjd_tai)
+        .def_readwrite("mjd_tt", &DateTime::mjd_tt)
         .def_readwrite("gast", &DateTime::gast)
         .def("gtod_to_itrf", &DateTime::gtod_to_itrf)
         .def("teme_to_gtod", &DateTime::teme_to_gtod)
@@ -79,5 +86,35 @@ PYBIND11_MODULE(tanc, m) {
             return std::to_string(dt.years) + "Y " + std::to_string(dt.months) + "M " + std::to_string(dt.days) + "D " + std::to_string(dt.hours) + "h " + std::to_string(dt.minutes) + "m " + std::to_string(dt.seconds) + "s " + std::to_string(dt.nanoseconds) + "ns";
         })
         ;
-
+    
+    py::class_<DateTimeArray>(m, "DateTimeArray")
+        .def(py::init<std::vector<DateTime>>())
+        // subscripting
+        .def("__getitem__", [](DateTimeArray &dt, int i) {
+            return dt[i];
+        })
+        .def("__len__", [](DateTimeArray &dt) {
+            return dt.size();
+        })
+        .def("jd_utc", &DateTimeArray::jd_utc)
+        .def("jd_ut1", &DateTimeArray::jd_ut1)
+        .def("jd_tai", &DateTimeArray::jd_tai)
+        .def("jd_tt", &DateTimeArray::jd_tt)
+        .def("mjd_utc", &DateTimeArray::mjd_utc)
+        .def("mjd_ut1", &DateTimeArray::mjd_ut1)
+        .def("mjd_tai", &DateTimeArray::mjd_tai)
+        .def("mjd_tt", &DateTimeArray::mjd_tt)
+        .def("gast", &DateTimeArray::gast)
+        .def("gmst", &DateTimeArray::gmst)
+        .def("py", &DateTimeArray::py)
+        .def("px", &DateTimeArray::px)
+        .def("tai_minus_utc", &DateTimeArray::tai_minus_utc)
+        .def("ut1_minus_utc", &DateTimeArray::ut1_minus_utc)
+        .def("itrf_to_j2000", &DateTimeArray::itrf_to_j2000)
+        .def("gtod_to_itrf", &DateTimeArray::gtod_to_itrf)
+        .def("teme_to_gtod", &DateTimeArray::teme_to_gtod)
+        .def("tod_to_teme", &DateTimeArray::tod_to_teme)
+        .def("mod_to_tod", &DateTimeArray::mod_to_tod)
+        .def("j2000_to_mod", &DateTimeArray::j2000_to_mod)
+    ;
 }

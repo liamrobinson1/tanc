@@ -285,17 +285,6 @@ class DateTime {
         return DateTime(y, m, d, h, min, s, ns);
     }
 
-    TimeDelta operator+(const DateTime& dtime) const {
-        int y = year + dtime.year;
-        int m = month + dtime.month;
-        int d = day + dtime.day;
-        int h = hour + dtime.hour;
-        int min = minute + dtime.minute;
-        int s = second + dtime.second;
-        int ns = nanosecond + dtime.nanosecond;
-        return TimeDelta(y, m, d, h, min, s, ns);
-    } 
-
     TimeDelta operator-(const DateTime& dtime) const {
         int y = year - dtime.year;
         int m = month - dtime.month;
@@ -334,10 +323,9 @@ DateTime jd_to_datetime(double jd) {
 
 class DateTimeArray {
     public:
-        const std::vector<DateTime> vec;
+        std::vector<DateTime> vec;
 
         DateTimeArray(std::vector<DateTime> vec) : vec(vec) {}
-        DateTimeArray() {}
 
         DateTimeArray operator+(const TimeDelta& tdelta) const {
             std::vector<DateTime> new_vec;
@@ -355,27 +343,169 @@ class DateTimeArray {
             }
             return DateTimeArray(new_vec);
         }
+
+        // print to cout
+        friend std::ostream& operator<<(std::ostream& os, const DateTimeArray& dtarray) {
+            int size_vec = dtarray.vec.size();
+            for (int i = 0; i < size_vec; i++) {
+                os << dtarray.vec[i] << std::endl;
+            }
+            return os;
+        }
+
+        // subscript operator, ./src/time.hpp:358:26: error: overloaded 'operator[]' must have at least one parameter of class or enumeration type
+        DateTime operator[](int i) {
+            return vec[i];
+        }
+        
+        // takes in a function pointer to a DateTime member function, that member function must take no arguments and return a 3x3 matrix
+        std::vector<Eigen::Matrix3d> get_matrix_attribute(Eigen::Matrix3d (DateTime::*method)()) {
+            int size_vec = vec.size();
+            std::vector<Eigen::Matrix3d> attr_vec;
+            attr_vec.reserve(size_vec);
+
+            for (int i = 0; i < size_vec; i++) {
+                attr_vec.push_back((vec[i].*method)());  // Invoke the member function
+            }
+
+            return attr_vec;
+        }
+
+
+        std::vector<double> get_double_attribute(double DateTime::*attr) {
+            int size_vec = vec.size();
+            std::vector<double> attr_vec;
+            attr_vec.reserve(size_vec);
+
+            for (int i = 0; i < size_vec; i++) {
+                attr_vec.push_back(vec[i].*attr);
+            }
+            return attr_vec;
+        }
+
+        std::vector<double> jd_utc() {
+            return get_double_attribute(&DateTime::jd_utc);
+        }
+
+        std::vector<double> jd_ut1() {
+            return get_double_attribute(&DateTime::jd_ut1);
+        }
+
+        std::vector<double> jd_tai() {
+            return get_double_attribute(&DateTime::jd_tai);
+        }
+
+        std::vector<double> jd_tt() {
+            return get_double_attribute(&DateTime::jd_tt);
+        }
+
+        std::vector<double> mjd_utc() {
+            return get_double_attribute(&DateTime::mjd_utc);
+        }
+
+        std::vector<double> mjd_ut1() {
+            return get_double_attribute(&DateTime::mjd_ut1);
+        }
+
+        std::vector<double> mjd_tai() {
+            return get_double_attribute(&DateTime::mjd_tai);
+        }
+
+        std::vector<double> mjd_tt() {
+            return get_double_attribute(&DateTime::mjd_tt);
+        }
+
+        std::vector<double> gast() {
+            return get_double_attribute(&DateTime::gast);
+        }
+
+        std::vector<double> gmst() {
+            return get_double_attribute(&DateTime::gmst);
+        }
+
+        std::vector<double> delta_psi() {
+            return get_double_attribute(&DateTime::delta_psi);
+        }
+
+        std::vector<double> delta_eps() {
+            return get_double_attribute(&DateTime::delta_eps);
+        }
+
+        std::vector<double> epsilon_bar() {
+            return get_double_attribute(&DateTime::epsilon_bar);
+        }
+
+        std::vector<double> px() {
+            return get_double_attribute(&DateTime::px);
+        }
+
+        std::vector<double> py() {
+            return get_double_attribute(&DateTime::py);
+        }
+
+        std::vector<double> tai_minus_utc() {
+            return get_double_attribute(&DateTime::tai_minus_utc);
+        }
+
+        std::vector<double> ut1_minus_utc() {
+            return get_double_attribute(&DateTime::ut1_minus_utc);
+        }
+
+        // note:  src/time.hpp:472:41: error: cannot initialize a parameter of type 'Eigen::Matrix3d DateTime::*' with an rvalue of type 'Eigen::Matrix3d (DateTime::*)()'
+
+        std::vector<Eigen::Matrix3d> itrf_to_j2000() {
+            return get_matrix_attribute(&DateTime::itrf_to_j2000);
+        }
+
+        std::vector<Eigen::Matrix3d> gtod_to_itrf() {
+            return get_matrix_attribute(&DateTime::gtod_to_itrf);
+        }
+
+        std::vector<Eigen::Matrix3d> teme_to_gtod() {
+            return get_matrix_attribute(&DateTime::teme_to_gtod);
+        }
+
+        std::vector<Eigen::Matrix3d> tod_to_teme() {
+            return get_matrix_attribute(&DateTime::tod_to_teme);
+        }
+
+        std::vector<Eigen::Matrix3d> mod_to_tod() {
+            return get_matrix_attribute(&DateTime::mod_to_tod);
+        }
+
+        std::vector<Eigen::Matrix3d> j2000_to_mod() {
+            return get_matrix_attribute(&DateTime::j2000_to_mod);
+        }
+
+        // size attribute: DateTimeArray.size
+        int size() {
+            return vec.size();
+        }
 };
     
 
 // datetime linspace returning as vec of datetimes
-std::vector<DateTime> datetime_linspace(DateTime start, DateTime end, int num) {
+DateTimeArray datetime_linspace(DateTime start, DateTime end, int num) {
     std::vector<DateTime> vec;
     double jd_start = start.jd_utc;
     double jd_end = end.jd_utc;
     double jd_step = (jd_end - jd_start) / (num - 1);
+    // preallocate that memory
+    vec.reserve(num);
     for (int i = 0; i < num; i++) {
         vec.push_back(jd_to_datetime(jd_start + i * jd_step));
     }
     return vec;
 }
 
-std::vector<DateTime> datetime_arange(DateTime start, DateTime end, TimeDelta step) {
+DateTimeArray datetime_arange(DateTime start, DateTime end, TimeDelta step) {
     std::vector<DateTime> vec;
     double jd_start = start.jd_utc;
     double jd_end = end.jd_utc;
     double jd_step = step.total_seconds() / 86400.0;
     int n_steps = (jd_end - jd_start) / jd_step;
+    // preallocate that memory
+    vec.reserve(n_steps);
     for (int i = 0; i < n_steps; i++) {
         vec.push_back(jd_to_datetime(jd_start + i * jd_step));
     }
