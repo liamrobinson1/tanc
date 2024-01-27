@@ -8,7 +8,7 @@ on:
 jobs:
   build:
     name: Wheels ${{ matrix.os }}, Python ${{ matrix.python }}
-    runs-on: self-hosted
+    runs-on: ${{ matrix.os }}
     strategy:
       matrix:
         python: [3.11]
