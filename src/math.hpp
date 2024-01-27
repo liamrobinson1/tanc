@@ -1,4 +1,6 @@
 #include "Eigen/Eigen"
+#define _USE_MATH_DEFINES // for ms visual studio
+#include <cmath>
 
 Eigen::MatrixXd eye(int n) {
     return Eigen::MatrixXd::Identity(n, n);

@@ -1,5 +1,6 @@
 #include "Eigen/Eigen"
 #include <iostream>
+#define _USE_MATH_DEFINES // for ms visual studio
 #include <cmath>
 #include "math.hpp"
 #include "iau1980.hpp"
