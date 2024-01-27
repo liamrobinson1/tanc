@@ -6,13 +6,76 @@ on:
       - main  # Change this to the main branch name, or use 'master' if that's the default branch.
 
 jobs:
-  build:
-    name: Wheels ${{ matrix.os }}, Python ${{ matrix.python }}
-    runs-on: ${{ matrix.os }}
+  build-self-hosted:
+    name: Wheels MacOS ARM, Python ${{ matrix.python }}
+    runs-on: self-hosted
     strategy:
       matrix:
         python: [3.11]
-        os: [macos-latest, windows-latest, self-hosted]
+      fail-fast: false  # Set to false to continue running other jobs even if one fails
+      
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Python ${{ matrix.python }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python }}
+    
+    - name: Install cibuildwheel
+      run: python -m pip install cibuildwheel
+
+    - name: Build wheels
+      run: python -m cibuildwheel --output-dir wheelhouse
+
+    - name: Install Twine
+      run: python -m pip install twine
+
+    - name: Publish to PyPI
+      if: github.event_name == 'push'
+      env:
+        TWINE_USERNAME: __token__
+        TWINE_PASSWORD: ${{ secrets.PYPI_API_TOKEN }}
+      run: twine upload wheelhouse/*
+
+  build-macos-latest:
+    name: Wheels MacOS x86_64, Python ${{ matrix.python }}
+    runs-on: macos-latest
+    strategy:
+      matrix:
+        python: [3.11]
+      fail-fast: false  # Set to false to continue running other jobs even if one fails
+      
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Python ${{ matrix.python }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python }}
+    
+    - name: Install cibuildwheel
+      run: python -m pip install cibuildwheel
+
+    - name: Build wheels
+      run: python -m cibuildwheel --output-dir wheelhouse
+
+    - name: Install Twine
+      run: python -m pip install twine
+
+    - name: Publish to PyPI
+      if: github.event_name == 'push'
+      env:
+        TWINE_USERNAME: __token__
+        TWINE_PASSWORD: ${{ secrets.PYPI_API_TOKEN }}
+      run: twine upload wheelhouse/*
+      
+  build-windows-latest:
+    name: Wheels Windows, Python ${{ matrix.python }}
+    runs-on: windows-latest
+    strategy:
+      matrix:
+        python: [3.11]
       fail-fast: false  # Set to false to continue running other jobs even if one fails
       
     steps:
