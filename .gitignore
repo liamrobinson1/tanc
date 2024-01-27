@@ -11,3 +11,4 @@ __pycache__
 Eigen
 .vscode
 pybind11
+*.egg-info

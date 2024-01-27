@@ -1,0 +1,17 @@
+
+[project]
+name = "tanc"
+version = "0.0.1"
+authors = [{name = "Liam Robinson", email = "liamers127@gmail.com"}]
+description = "Time and coordinate systems for astrodynamics"
+requires-python = ">=3.7"
+
+[project.urls]
+Homepage = "https://example.com"
+Repository = "https://github.com/liamrobinson1/tanc"
+Documentation = "https://yourprojectdocs.com"
+
+[build-system]
+requires = ["setuptools>=42", "wheel", "numpy>=1.26.0", "pybind11>=2.11.0"]
+build-backend = "setuptools.build_meta"
+
