@@ -12,3 +12,4 @@ Eigen
 .vscode
 pybind11
 *.egg-info
+.pytest_cache

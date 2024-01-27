@@ -1,13 +1,8 @@
 import time
-from typing import Union, Callable
-import sys
-import inspect
-import numpy as np
-import os
+from typing import Union
 
 tstart = None
 timer_name = None
-
 
 def tic(msg: Union[str, None] = None):
     """Starts a timer, ended by ``toc()``
