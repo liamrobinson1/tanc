@@ -13,3 +13,4 @@ Eigen
 pybind11
 *.egg-info
 .pytest_cache
+.pyirc
