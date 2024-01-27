@@ -21,13 +21,3 @@ build-backend = "setuptools.build_meta"
 [tool.cibuildwheel]
 build = ["cp312-*", "cp311-*", "cp310-*", "cp39-*"]
 skip = ["*win32*"]
-
-# Build `universal2` and `arm64` wheels on an Intel runner.
-# Note that the `arm64` wheel and the `arm64` part of the `universal2`
-# wheel cannot be tested in this configuration.
-[tool.cibuildwheel.macos]
-archs = ["x86_64", "universal2", "arm64"]
-
-# On an Linux Intel runner with qemu installed, build Intel and ARM wheels
-[tool.cibuildwheel.linux]
-archs = ["auto", "aarch64"]
