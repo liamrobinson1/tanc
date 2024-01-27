@@ -8,6 +8,7 @@
 #include <iostream>
 #include "math.hpp"
 #include "iau1980.hpp"
+#include <chrono>
 
 double RAD_TO_ARCSECOND = 180.0 * 3600.0 / M_PI;
 
@@ -515,4 +516,23 @@ DateTimeArray datetime_arange(DateTime start, DateTime end, TimeDelta step) {
         vec.push_back(jd_to_datetime(jd_start + i * jd_step));
     }
     return vec;
+}
+
+// function called now() that returns the current datetime in utc
+DateTime now() {
+    auto now = std::chrono::system_clock::now();
+    auto now_as_time_t = std::chrono::system_clock::to_time_t(now);
+    auto now_as_tm = *std::localtime(&now_as_time_t);
+
+    // Get current time's nanoseconds component
+    auto now_ns = std::chrono::duration_cast<std::chrono::nanoseconds>(now.time_since_epoch()) % 1000000000;
+
+    // Construct DateTime object
+    return DateTime(now_as_tm.tm_year + 1900,  // Adjust year
+                    now_as_tm.tm_mon + 1,     // Adjust month (tm_mon is 0-11)
+                    now_as_tm.tm_mday,
+                    now_as_tm.tm_hour,
+                    now_as_tm.tm_min,
+                    now_as_tm.tm_sec,
+                    static_cast<int>(now_ns.count()));
 }

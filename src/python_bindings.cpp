@@ -16,6 +16,8 @@ PYBIND11_MODULE(sidereal, m) {
     m.doc() = "sidereal module";  // Optional module docstring
     m.def("linspace", &datetime_linspace, "Generate n evenly spaced DateTime objects between two specified DateTime points.");
     m.def("arange", &datetime_arange, "Generate DateTime objects between two specified DateTime points with a specified step size.");
+    m.def("jd_to_datetime", &jd_to_datetime, "Convert a Julian Date to a DateTime object.");
+    m.def("now", &now, "Get the current DateTime.");
 
     py::class_<DateTime>(m, "DateTime")
         .def(py::init<int, int, int, int, int, int, int>(), 
