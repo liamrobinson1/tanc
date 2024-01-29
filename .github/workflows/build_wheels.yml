@@ -7,19 +7,21 @@ on:
 
 jobs:
   build:
-    name: Build wheel for ${{ matrix.buildplat[1] }}
-    runs-on: ${{ matrix.buildplat[0] }}
+    name: Wheels on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
     strategy:
+      fail-fast: false
       matrix:
-        # Github Actions doesn't support pairing matrix values together, let's improvise
-        # https://github.com/github/feedback/discussions/7835#discussioncomment-1769026
-        buildplat:
-          - [macos-12, macosx_x86_64]
-          - [windows-2019, win_amd64]
-        python: ["cp311"]
+        os: [ubuntu-latest, windows-latest, macos-latest]
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
+
+    - name: Set up QEMU
+      if: runner.os == 'Linux'
+      uses: docker/setup-qemu-action@v3
+      with:
+        platforms: all
 
     # Used to push the built wheels
     - uses: actions/setup-python@0a5c61591373683505ea898e09a3ea4f39ef2b9c # v5.0.0
@@ -32,11 +34,11 @@ jobs:
         CIBW_PRERELEASE_PYTHONS: True
         CIBW_ARCHS_MACOS: x86_64 arm64
         CIBW_ARCHS_WINDOWS: AMD64
-        CIBW_ARCHS_LINUX: x86_64
+        CIBW_ARCHS_LINUX: x86_64 aarch64
         CIBW_TEST_REQUIRES: pytest numpy
         CIBW_TEST_COMMAND: pytest {project}/tests/test.py
         CIBW_TEST_SKIP: "*-macosx_arm64 *-macosx_universal2:arm64"
-
+      
     - name: Install Twine
       run: python -m pip install twine
 

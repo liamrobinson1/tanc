@@ -1,7 +1,7 @@
 
 [project]
 name = "sidereal"
-version = "0.0.12"
+version = "0.0.13"
 authors = [{name = "Liam Robinson", email = "liamers127@gmail.com"}]
 description = "Time and coordinate systems for astrodynamics"
 requires-python = ">=3.9"
@@ -16,5 +16,5 @@ requires = ["setuptools>=42", "wheel", "numpy>=1.19.2", "pybind11>=2.11.0", "eig
 build-backend = "setuptools.build_meta"
 
 [tool.cibuildwheel]
-build = ["cp312-*", "cp311-*"]
+build = [ "cp312-*", "cp311-*", "cp310-*", "cp39-*"]
 skip = ["*win32*"]
