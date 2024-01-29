@@ -19,4 +19,4 @@ start-runner:
 stubs:
 	pybind11-stubgen sidereal --numpy-array-remove-parameters --ignore-all-errors --output-dir src
 
-all: clean install sphinx stubs
+all: clean install test sphinx stubs
