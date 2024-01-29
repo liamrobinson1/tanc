@@ -13,9 +13,22 @@ using namespace std;
 #include "profile.hpp"
 
 PYBIND11_MODULE(sidereal, m) {
-    m.doc() = "sidereal module";  // Optional module docstring
-    m.def("linspace", &datetime_linspace, "Generate n evenly spaced DateTime objects between two specified DateTime points.");
-    m.def("arange", &datetime_arange, "Generate DateTime objects between two specified DateTime points with a specified step size.");
+    m.def("linspace", &datetime_linspace, R"mydelimiter(
+        Generate n evenly spaced DateTime objects between two specified DateTime points
+
+        :param dt1: The first DateTime
+        :param dt2: The second DateTime
+        :param n: The number of DateTime objects to generate
+        :return: A vector of DateTime objects
+        )mydelimiter");
+    m.def("arange", &datetime_arange, R"mydelimiter(
+        Generate DateTime objects between two specified DateTime points with a specified step size.
+
+        :param dt1: The first DateTime
+        :param dt2: The second DateTime
+        :param step: The step size
+        :return: A vector of DateTime objects
+        )mydelimiter");
     m.def("jd_to_datetime", &jd_to_datetime, "Convert a Julian Date to a DateTime object.");
     m.def("now", &now, "Get the current DateTime.");
     m.def("years", &years);
