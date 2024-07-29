@@ -5,11 +5,18 @@ version = "0.0.14"
 authors = [{name = "Liam Robinson", email = "liamers127@gmail.com"}]
 description = "Time and coordinate systems for astrodynamics"
 requires-python = ">=3.9"
+dependencies = [
+    "setuptools>=42",
+    "wheel",
+    "numpy>=1.19.2",
+    "pybind11>=2.11.0",
+    "eigency>=1.6.0",
+    "setuptools-scm>=8.0"
+]
 
 [project.urls]
 Homepage = "https://example.com"
 Repository = "https://github.com/liamrobinson1/sidereal"
-Documentation = "https://yourprojectdocs.com"
 
 [build-system]
 requires = ["setuptools>=42", "wheel", "numpy>=1.19.2", "pybind11>=2.11.0", "eigency>=1.6.0", "setuptools-scm>=8.0"]
