@@ -1,28 +1,14 @@
 
 [project]
 name = "sidereal"
-version = "0.0.15"
+version = "0.0.16"
 authors = [{name = "Liam Robinson", email = "liamers127@gmail.com"}]
 description = "Time and coordinate systems for astrodynamics"
-requires-python = ">=3.9"
-dependencies = [
-    "setuptools>=42",
-    "wheel",
-    "numpy>=1.19.2",
-    "pybind11>=2.11.0",
-    "eigency>=1.6.0",
-    "setuptools-scm>=8.0",
-    "bump2version>=0.0.1",
-]
+requires-python = ">=3.10"
 
 [project.urls]
-Homepage = "https://example.com"
 Repository = "https://github.com/liamrobinson1/sidereal"
 
 [build-system]
 requires = ["setuptools>=42", "wheel", "numpy>=1.19.2", "pybind11>=2.11.0", "eigency>=1.6.0", "setuptools-scm>=8.0"]
 build-backend = "setuptools.build_meta"
-
-[tool.cibuildwheel]
-build = ["cp312-*", "cp311-*", "cp310-*", "cp39-*"]
-skip = "cp36-* cp37-* cp-38* pp* *-manylinux_i686 *_ppc64le *_s390x *win32*"
