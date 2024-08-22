@@ -10,7 +10,7 @@ jobs:
     name: Wheels on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     strategy:
-      fail-fast: false
+      fail-fast: true
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
 
@@ -29,16 +29,16 @@ jobs:
         python-version: "3.x"
     
     - name: Build wheels
-      uses: pypa/cibuildwheel@7da7df1efc530f07d1945c00934b8cfd34be0d50 # v2.16.1
+      uses: pypa/cibuildwheel@bd033a44476646b606efccdd5eed92d5ea1d77ad # v2.20.0
       env:
-        CIBW_PRERELEASE_PYTHONS: True
-        CIBW_ARCHS_MACOS: x86_64 arm64
-        CIBW_ARCHS_WINDOWS: AMD64
-        CIBW_ARCHS_LINUX: x86_64 aarch64
-        CIBW_TEST_REQUIRES: pytest numpy
-        CIBW_TEST_COMMAND: pytest {project}/tests/test.py
-        CIBW_BUILD: cp312-* cp311-* cp310-* cp39-*
-        CIBW_SKIP: pp* *-manylinux_i686 *_ppc64le *_s390x *win32*
+          CIBW_PRERELEASE_PYTHONS: True
+          CIBW_ARCHS_MACOS: x86_64 arm64
+          CIBW_ARCHS_WINDOWS: AMD64
+          CIBW_ARCHS_LINUX: x86_64 aarch64
+          CIBW_TEST_REQUIRES: pytest numpy
+          CIBW_TEST_COMMAND: pytest {project}/tests/test.py
+          CIBW_BUILD: cp312-* cp311-* cp310-*
+          CIBW_SKIP: pp* *-manylinux_i686 *musllinux* *_ppc64le *_s390x *win32* *-macosx_universal2:arm64
       
     - name: Install Twine
       run: python -m pip install twine
